@@ -4,7 +4,7 @@ id: "mobile-app-integrated-database"
 ---
 ---
 
-Learn to create a **simple mobile application** that will display an _Employee Profile_ and allow you to _update the existing profile picture_ with the newly captured image.
+Learn to create a **simple mobile application** that will display an _Employee Profile_ and allow you to _update the existing profile picture_ with the newly captured imagedvd.
 
 Through this mobile application, you will learn about the following functionalities:
 
