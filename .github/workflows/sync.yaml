@@ -48,14 +48,7 @@ jobs:
           echo "$modified"
           echo "******* $deleted"
           # Construct the new JSON object
-          new_json=$(jq -n --argjson added "$added" --argjson copied "$copied" --argjson modified "$modified" --argjson renamed "$renamed" --argjson deleted "$deleted" \
-            '{
-              "added": $added,
-              "copied": $copied,
-              "modified": $modified,
-              "renamed": $renamed,
-              "deleted": $deleted
-            }')
+          new_json=$(jq -n --argjson added "$modified" '{"modified": $modified}')
         
           # Write the JSON object to the file
           echo "$new_json" > changed_files.json
