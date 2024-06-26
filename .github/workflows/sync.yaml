@@ -24,16 +24,37 @@ jobs:
     name: Test changed-files
     steps:
       - uses: actions/checkout@v4
-      - uses: tj-actions/changed-files@v44
+      - name: Collect Changed Files
         id: changed-files
-        with:
-          format: 'json'
-      - run: |
-          echo "Added files: ${{ steps.changed-files.outputs.added_files }}"
-          echo "Modified files: ${{ steps.changed-files.outputs.modified_files }}"
-          echo "Deleted files: ${{ steps.changed-files.outputs.deleted_files }}"
-          echo "Copied files: ${{ steps.changed-files.outputs.copied_files }}"
-          echo "Renamed files: ${{ steps.changed-files.outputs.renamed_files }}"
+        uses: tj-actions/changed-files@v44
+      
+      - name: Append to JSON File
+        run: |
+          # Create the JSON file if it doesn't exist
+          touch changed_files.json
+        
+          # Append the changed files to the JSON file
+          jq -s '{
+            "added": ${{ steps.changed-files.outputs.added_files }},
+            "copied": ${{ steps.changed-files.outputs.copied_files }},
+            "modified": ${{ steps.changed-files.outputs.modified_files }},
+            "renamed": ${{ steps.changed-files.outputs.renamed_files }},
+            "deleted": ${{ steps.changed-files.outputs.deleted_files }}
+          }' changed_files.json > changed_files.tmp && mv changed_files.tmp changed_files.json
+        
+          # Print the contents of the JSON file
+          cat changed_files.json
+        shell: bash
+      # - uses: tj-actions/changed-files@v44
+      #   id: changed-files
+      #   with:
+      #     format: 'json'
+      # - run: |
+      #     echo "Added files: ${{ steps.changed-files.outputs.added_files }}"
+      #     echo "Modified files: ${{ steps.changed-files.outputs.modified_files }}"
+      #     echo "Deleted files: ${{ steps.changed-files.outputs.deleted_files }}"
+      #     echo "Copied files: ${{ steps.changed-files.outputs.copied_files }}"
+      #     echo "Renamed files: ${{ steps.changed-files.outputs.renamed_files }}"
           
       # - uses: yumemi-inc/changed-files@v3
       #   id: changed
