@@ -26,6 +26,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: tj-actions/changed-files@v44
         id: changed-files
+        with:
+          format: 'json'
       - run: |
           echo "Added files: ${{ steps.changed-files.outputs.added_files }}"
           echo "Modified files: ${{ steps.changed-files.outputs.modified_files }}"
