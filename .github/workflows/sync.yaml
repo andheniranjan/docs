@@ -40,20 +40,14 @@ jobs:
       - name: Create JSON File with Changed Files
         run: |
           # Function to ensure JSON format
-          ensure_json() {
-            if [ -z "$1" ]; then
-              echo "[]"
-            else
-              echo "$1"
-            fi
-          }
+         
 
           # Get the outputs and ensure they are in JSON format
-          added=$(ensure_json '${{ steps.changed-files.outputs.added_files }}')
-          copied=$(ensure_json '${{ steps.changed-files.outputs.copied_files }}')
-          modified=$(ensure_json '${{ steps.changed-files.outputs.modified_files }}')
-          renamed=$(ensure_json '${{ steps.changed-files.outputs.renamed_files }}')
-          deleted=$(ensure_json '${{ steps.changed-files.outputs.deleted_files }}')
+          added='${{ steps.changed-files.outputs.added_files }}'
+          copied='${{ steps.changed-files.outputs.copied_files }}'
+          modified='${{ steps.changed-files.outputs.modified_files }}'
+          renamed='${{ steps.changed-files.outputs.renamed_files }}'
+          deleted='${{ steps.changed-files.outputs.deleted_files }}'
 
           echo "$modified"
           # Construct the new JSON object
