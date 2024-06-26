@@ -30,21 +30,36 @@ jobs:
       
       - name: Append to JSON File
         run: |
-          # Create the JSON file if it doesn't exist
-          touch changed_files.json
+         # Create the JSON file if it doesn't exist
+         touch changed_files.json
         
-          # Append the changed files to the JSON file
-          jq -s '{
-            "added": ${{ steps.changed-files.outputs.added_files }},
-            "copied": ${{ steps.changed-files.outputs.copied_files }},
-            "modified": ${{ steps.changed-files.outputs.modified_files }},
-            "renamed": ${{ steps.changed-files.outputs.renamed_files }},
-            "deleted": ${{ steps.changed-files.outputs.deleted_files }}
-          }' changed_files.json > changed_files.tmp && mv changed_files.tmp changed_files.json
+         # Read the existing JSON file
+         existing_json=$(cat changed_files.json)
+        
+         # Construct the new JSON object
+         new_json=$(jq -n \
+          --arg added "${{ steps.changed-files.outputs.added_files }}" \
+          --arg copied "${{ steps.changed-files.outputs.copied_files }}" \
+          --arg modified "${{ steps.changed-files.outputs.modified_files }}" \
+          --arg renamed "${{ steps.changed-files.outputs.renamed_files }}" \
+          --arg deleted "${{ steps.changed-files.outputs.deleted_files }}" \
+          '{
+            "added": ($added | fromjson),
+            "copied": ($copied | fromjson),
+            "modified": ($modified | fromjson),
+            "renamed": ($renamed | fromjson),
+            "deleted": ($deleted | fromjson)
+          }')
+        
+          # Merge the existing and new JSON objects
+          merged_json=$(echo "$existing_json $new_json" | jq -s add)
+        
+          # Write the merged JSON to the file
+          echo "$merged_json" > changed_files.json
         
           # Print the contents of the JSON file
           cat changed_files.json
-        shell: bash
+         shell: bash
       # - uses: tj-actions/changed-files@v44
       #   id: changed-files
       #   with:
