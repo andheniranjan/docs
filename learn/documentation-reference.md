@@ -10,6 +10,8 @@ Introduction to WaveMaker. Find a complete developer's guide to build an app wit
 
 WaveMaker lays down extensive developer tooling capabilities and integration services. You can customize complex solutions to simpler format, such as variables. Bind them to the user interface to function simply.
 
+
+
 In addition, create your own custom widgets called [Prefabs](/learn/app-development/custom-widgets/prefabs-overview) that are API-integrated, encapsulating functionality, interaction and data, allowing you to develop once and edit and reuse as many times. 
 
 The platform provides you with everything you need for developing and building production-ready applications with faster and streamlined deployment process. Find complete developers' guide for building low-code apps using WaveMaker.
