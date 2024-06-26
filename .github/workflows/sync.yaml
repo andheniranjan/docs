@@ -48,6 +48,26 @@ jobs:
           echo "$modified"
           echo "******* $deleted"
           # Construct the new JSON object
-          jq -n --arg added "$modified" '{"modified": $added}'
+          #jq -n --arg added "$modified" '{"modified": $added}'
+
+          new_json=$(jq -n \
+            --arg added "$added" \
+            --arg copied "$copied" \
+            --arg modified "$modified" \
+            --arg renamed "$renamed" \
+            --arg deleted "$deleted" \
+            '{
+              "added": $added,
+              "copied": $copied,
+              "modified": $modified,
+              "renamed": $renamed,
+              "deleted": $deleted
+            }')
+        
+          # Write the JSON object to the file
+          echo "$new_json" > changed_files.json
+        
+          # Print the contents of the JSON file
+          cat changed_files.json
 
         shell: bash
