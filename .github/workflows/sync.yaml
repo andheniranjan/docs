@@ -32,17 +32,17 @@ jobs:
         run: |
           # Construct the new JSON object
           new_json=$(jq -n \
-            --argjson added "${{ steps.changed-files.outputs.added_files }}" \
-            --argjson copied "${{ steps.changed-files.outputs.copied_files }}" \
-            --argjson modified "${{ steps.changed-files.outputs.modified_files }}" \
-            --argjson renamed "${{ steps.changed-files.outputs.renamed_files }}" \
-            --argjson deleted "${{ steps.changed-files.outputs.deleted_files }}" \
+            --arg added "${{ steps.changed-files.outputs.added_files }}" \
+            --arg copied "${{ steps.changed-files.outputs.copied_files }}" \
+            --arg modified "${{ steps.changed-files.outputs.modified_files }}" \
+            --arg renamed "${{ steps.changed-files.outputs.renamed_files }}" \
+            --arg deleted "${{ steps.changed-files.outputs.deleted_files }}" \
             '{
-              "added": $added,
-              "copied": $copied,
-              "modified": $modified,
-              "renamed": $renamed,
-              "deleted": $deleted
+              "added": ($added | fromjson),
+              "copied": ($copied | fromjson),
+              "modified": ($modified | fromjson),
+              "renamed": ($renamed | fromjson),
+              "deleted": ($deleted | fromjson)
             }')
         
           # Write the JSON object to the file
