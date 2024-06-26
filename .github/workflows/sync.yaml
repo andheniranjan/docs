@@ -29,7 +29,7 @@ jobs:
         uses: tj-actions/changed-files@v44
         with:
           json: "true"
-          all_old_new_renamed_files: "true"
+          include_all_old_new_renamed_files: "true"
       - name: Debug Changed Files Outputs
         run: |
           echo "Added files: ${{ steps.changed-files.outputs.added_files }}"
