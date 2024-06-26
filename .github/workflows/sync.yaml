@@ -57,7 +57,7 @@ jobs:
 
           echo "$modified"
           # Construct the new JSON object
-          new_json=$(jq -n \
+          new_json=$(jq -c -n \
             --argjson added "$added" \
             --argjson copied "$copied" \
             --argjson modified "$modified" \
