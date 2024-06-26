@@ -48,6 +48,6 @@ jobs:
           echo "$modified"
           echo "******* $deleted"
           # Construct the new JSON object
-          jq -n --argjson added "$modified" '{"modified": $added}'
+          jq -n --arg added "$modified" '{"modified": $added}'
 
         shell: bash
