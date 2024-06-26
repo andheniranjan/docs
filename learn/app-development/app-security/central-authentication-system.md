@@ -4,7 +4,7 @@ id: "central-authentication-system"
 ---
 ---
 
-The Central Authentication Service (CAS) is a single sign-on protocol for the web. Its purpose is to permit a user to access multiple applications using the same underlying authentication service. For example, a company has HRIS system which authenticates using LDAP. Now we want to build a Leave application using WaveMaker. If we need to provide a single login to Leave App & HRIS, then CAS is the solution to enable single sign-on.
+The Central Authentication Service (CAS) is a single sign-on protocol for the web. Its purpose is to permit a user to access multiple applications using the same underlying authentication service. For example, a company has HRIS system which authenticates using LDAP. Now we want to build a Leave application using WaveMaker. If we need to provide a single login to Leave App & HRIS, then CAS is the solution to enable single sign-on.lsdnvlnd
 
 CAS also allows web applications to authenticate users without gaining access to a user's security credentials, such as a password. The CAS protocol involves at least three parties: a client web browser, the web application requesting authentication, and the CAS server. It may also involve a back-end service, such as a database server, that does not have its own HTTP interface but communicates with a web application.
 
