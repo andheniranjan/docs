@@ -27,7 +27,8 @@ jobs:
       - name: Collect Changed Files
         id: changed-files
         uses: tj-actions/changed-files@v44
-      
+        with:
+          json: "true"
       - name: Debug Changed Files Outputs
         run: |
           echo "Added files: ${{ steps.changed-files.outputs.added_files }}"
@@ -35,46 +36,6 @@ jobs:
           echo "Modified files: ${{ steps.changed-files.outputs.modified_files }}"
           echo "Renamed files: ${{ steps.changed-files.outputs.renamed_files }}"
           echo "Deleted files: ${{ steps.changed-files.outputs.deleted_files }}"
-        shell: bash
-      
-      - name: Create JSON File with Changed Files
-        run: |
-          # Ensure JSON format function
-          ensure_json() {
-            if [ -z "$1" ] || [ "$1" == "[]" ]; then
-              echo "[]"
-            else
-              echo "$1"
-            fi
-          }
-
-          # Get the outputs and ensure they are in JSON format
-          added=$(ensure_json "${{ steps.changed-files.outputs.added_files }}")
-          copied=$(ensure_json "${{ steps.changed-files.outputs.copied_files }}")
-          modified=$(ensure_json "${{ steps.changed-files.outputs.modified_files }}")
-          renamed=$(ensure_json "${{ steps.changed-files.outputs.renamed_files }}")
-          deleted=$(ensure_json "${{ steps.changed-files.outputs.deleted_files }}")
-
-          # Construct the new JSON object
-          new_json=$(jq -n \
-            --argjson added "$added" \
-            --argjson copied "$copied" \
-            --argjson modified "$modified" \
-            --argjson renamed "$renamed" \
-            --argjson deleted "$deleted" \
-            '{
-              "added": $added,
-              "copied": $copied,
-              "modified": $modified,
-              "renamed": $renamed,
-              "deleted": $deleted
-            }')
-        
-          # Write the JSON object to the file
-          echo "$new_json" > changed_files.json
-        
-          # Print the contents of the JSON file
-          cat changed_files.json
         shell: bash
         
       # - uses: tj-actions/changed-files@v44
