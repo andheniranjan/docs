@@ -28,6 +28,7 @@ jobs:
         id: changed
         with:
           format: 'json'
+          statuses: 'added|modified|renamed'
       - run: |
           for file in ${{ steps.changed.outputs.files }}; do
             echo "$file"
