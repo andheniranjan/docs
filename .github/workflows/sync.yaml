@@ -28,21 +28,46 @@ jobs:
         id: changed-files
         uses: tj-actions/changed-files@v44
       
+      - name: Debug Changed Files Outputs
+        run: |
+          echo "Added files: ${{ steps.changed-files.outputs.added_files }}"
+          echo "Copied files: ${{ steps.changed-files.outputs.copied_files }}"
+          echo "Modified files: ${{ steps.changed-files.outputs.modified_files }}"
+          echo "Renamed files: ${{ steps.changed-files.outputs.renamed_files }}"
+          echo "Deleted files: ${{ steps.changed-files.outputs.deleted_files }}"
+        shell: bash
+      
       - name: Create JSON File with Changed Files
         run: |
+          # Function to ensure JSON format
+          ensure_json() {
+            if [ -z "$1" ] || [ "$1" == "[]" ]; then
+              echo "[]"
+            else
+              echo "$1"
+            fi
+          }
+
+          # Get the outputs and ensure they are in JSON format
+          added=$(ensure_json '${{ steps.changed-files.outputs.added_files }}')
+          copied=$(ensure_json '${{ steps.changed-files.outputs.copied_files }}')
+          modified=$(ensure_json '${{ steps.changed-files.outputs.modified_files }}')
+          renamed=$(ensure_json '${{ steps.changed-files.outputs.renamed_files }}')
+          deleted=$(ensure_json '${{ steps.changed-files.outputs.deleted_files }}')
+
           # Construct the new JSON object
           new_json=$(jq -n \
-            --arg added "${{ steps.changed-files.outputs.added_files }}" \
-            --arg copied "${{ steps.changed-files.outputs.copied_files }}" \
-            --arg modified "${{ steps.changed-files.outputs.modified_files }}" \
-            --arg renamed "${{ steps.changed-files.outputs.renamed_files }}" \
-            --arg deleted "${{ steps.changed-files.outputs.deleted_files }}" \
+            --argjson added "$added" \
+            --argjson copied "$copied" \
+            --argjson modified "$modified" \
+            --argjson renamed "$renamed" \
+            --argjson deleted "$deleted" \
             '{
-              "added": ($added | fromjson),
-              "copied": ($copied | fromjson),
-              "modified": ($modified | fromjson),
-              "renamed": ($renamed | fromjson),
-              "deleted": ($deleted | fromjson)
+              "added": $added,
+              "copied": $copied,
+              "modified": $modified,
+              "renamed": $renamed,
+              "deleted": $deleted
             }')
         
           # Write the JSON object to the file
