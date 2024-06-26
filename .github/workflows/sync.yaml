@@ -39,7 +39,7 @@ jobs:
       
       - name: Create JSON File with Changed Files
         run: |
-          # Function to ensure JSON format
+          # Ensure JSON format function
           ensure_json() {
             if [ -z "$1" ] || [ "$1" == "[]" ]; then
               echo "[]"
@@ -49,11 +49,11 @@ jobs:
           }
 
           # Get the outputs and ensure they are in JSON format
-          added=$(ensure_json '${{ steps.changed-files.outputs.added_files }}')
-          copied=$(ensure_json '${{ steps.changed-files.outputs.copied_files }}')
-          modified=$(ensure_json '${{ steps.changed-files.outputs.modified_files }}')
-          renamed=$(ensure_json '${{ steps.changed-files.outputs.renamed_files }}')
-          deleted=$(ensure_json '${{ steps.changed-files.outputs.deleted_files }}')
+          added=$(ensure_json "${{ steps.changed-files.outputs.added_files }}")
+          copied=$(ensure_json "${{ steps.changed-files.outputs.copied_files }}")
+          modified=$(ensure_json "${{ steps.changed-files.outputs.modified_files }}")
+          renamed=$(ensure_json "${{ steps.changed-files.outputs.renamed_files }}")
+          deleted=$(ensure_json "${{ steps.changed-files.outputs.deleted_files }}")
 
           # Construct the new JSON object
           new_json=$(jq -n \
